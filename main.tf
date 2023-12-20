@@ -41,6 +41,19 @@ resource "azurerm_subnet" "public_subnet" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
+resource "azurerm_public_ip" "frontend_public_ip" {
+  name                = "frontend-public-ip"
+  resource_group_name = azurerm_resource_group.myrg_deploy.name
+  location            = azurerm_resource_group.myrg_deploy.location
+  allocation_method   = "Dynamic"
+}
+
+resource "azurerm_public_ip" "backend_public_ip" {
+  name                = "backend-public-ip"
+  resource_group_name = azurerm_resource_group.myrg_deploy.name
+  location            = azurerm_resource_group.myrg_deploy.location
+  allocation_method   = "Dynamic"
+}
 
 resource "azurerm_network_security_group" "nsg_demo" {
     name="nsg_demo"
@@ -100,6 +113,7 @@ resource "azurerm_network_interface" "frontend_nic" {
     name                          = "FrontendNICConfig"
     subnet_id                     = azurerm_subnet.public_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.frontend_public_ip.id
   }
 }
 
@@ -112,6 +126,8 @@ resource "azurerm_network_interface" "backend_nic" {
     name                          = "BackendNICConfig"
     subnet_id                     = azurerm_subnet.private_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.backend_public_ip.id
+
   }
 }
 
