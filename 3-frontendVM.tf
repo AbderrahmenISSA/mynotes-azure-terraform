@@ -81,7 +81,8 @@ resource "azurerm_linux_virtual_machine" "frontend_VM" {
     username   = var.FRONTEND_USER
     public_key = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
   }
-# # install nginx packagz
-# custom_data = base64encode(file("code_script.sh"))
 
+# install docker package
+  custom_data = base64encode(file("scripts/frontendScript.sh"))
+  
 }

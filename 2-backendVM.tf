@@ -82,4 +82,7 @@ resource "azurerm_linux_virtual_machine" "backend_VM" {
     public_key = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
   }
 
+# install mysql client
+  custom_data = base64encode(file("scripts/backendScript.sh"))
+
 }
