@@ -8,7 +8,6 @@ resource "azapi_resource_action" "ssh_public_key_gen" {
   resource_id = azapi_resource.ssh_public_key.id
   action      = "generateKeyPair"
   method      = "POST"
-
   response_export_values = ["publicKey", "privateKey"]
 }
 
@@ -19,6 +18,21 @@ resource "azapi_resource" "ssh_public_key" {
   parent_id = azurerm_resource_group.myrg_deploy.id
 }
 
-output "key_data" {
-  value = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
+output "private_key" {
+  value = jsondecode(azapi_resource_action.ssh_public_key_gen.output).privateKey
+}
+
+resource "null_resource" "save_private_key" {
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "${jsondecode(azapi_resource_action.ssh_public_key_gen.output).privateKey}" > pem/${random_pet.ssh_key_name.id}.pem
+    EOT
+  }
+  depends_on = [azapi_resource_action.ssh_public_key_gen]
+}
+
+resource "local_file" "private_key_file" {
+  filename = "pem/${random_pet.ssh_key_name.id}.pem"
+  content  = jsondecode(azapi_resource_action.ssh_public_key_gen.output).privateKey
+  depends_on = [null_resource.save_private_key]
 }
