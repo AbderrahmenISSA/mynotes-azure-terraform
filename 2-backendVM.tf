@@ -74,7 +74,7 @@ resource "azurerm_linux_virtual_machine" "backend_VM" {
     version   = "latest"
   }
 
-  computer_name  = "hostname"
+  computer_name  = "backend"
   admin_username = var.SSH_USER
 
   admin_ssh_key {
@@ -83,6 +83,6 @@ resource "azurerm_linux_virtual_machine" "backend_VM" {
   }
 
   # install docker
-  custom_data = base64encode(file("scripts/backendScript.sh"))
+  # custom_data = base64encode(file("scripts/backendScript.sh"))
 
 }

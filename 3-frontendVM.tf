@@ -74,7 +74,7 @@ resource "azurerm_linux_virtual_machine" "frontend_VM" {
     version   = "latest"
   }
 
-  computer_name  = "hostname"
+  computer_name  = "frontend"
   admin_username = var.SSH_USER
 
   admin_ssh_key {
@@ -82,7 +82,7 @@ resource "azurerm_linux_virtual_machine" "frontend_VM" {
     public_key = azurerm_ssh_public_key.backend_public_key.public_key
   }
 
-# install docker package
-  #custom_data = base64encode(file("scripts/frontendScript.sh"))
+  # install docker package
+  # custom_data = base64encode(file("scripts/frontendScript.sh"))
   
 }
