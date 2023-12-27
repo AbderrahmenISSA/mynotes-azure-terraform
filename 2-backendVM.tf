@@ -27,7 +27,7 @@ resource "azurerm_network_security_rule" "backend_ssh_rule" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
-  source_address_prefix       = "89.157.0.28"
+  source_address_prefix       = var.SSH_PUBLIC_IP
   destination_address_prefix  = "*"
   network_security_group_name = azurerm_network_security_group.nsg_back.name
   resource_group_name         = azurerm_resource_group.myrg_deploy.name
@@ -75,14 +75,14 @@ resource "azurerm_linux_virtual_machine" "backend_VM" {
   }
 
   computer_name  = "hostname"
-  admin_username = var.BACKEND_USER
+  admin_username = var.SSH_USER
 
   admin_ssh_key {
-    username   = var.BACKEND_USER
-    public_key = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
+    username   = var.SSH_USER
+    public_key = azurerm_ssh_public_key.backend_public_key.public_key
   }
 
-# install mysql client
+  # install docker
   custom_data = base64encode(file("scripts/backendScript.sh"))
 
 }

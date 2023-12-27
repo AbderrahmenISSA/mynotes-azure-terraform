@@ -1,8 +1,7 @@
 variable "subscription_id" {
   description = "Azure Subscription ID"
-  default     = "2f70ea30-d0b7-40b8-8aa2-a0bbb69923c2" #Ahed
-  # default     = "40423b54-8d08-4ff3-8628-c78e663f8353" #Abderrahmen
-
+  # default     = "2f70ea30-d0b7-40b8-8aa2-a0bbb69923c2" #Ahed
+  default     = "40423b54-8d08-4ff3-8628-c78e663f8353" #Abderrahmen
 }
 
 variable "az_location" {
@@ -31,14 +30,19 @@ variable "PRIVATE_SUBNETS_CIDR" {
   default = ["192.168.11.0/24"]
 }
 
+########################### SSH VMs ###############################
+variable "SSH_USER" {
+  description = "Username"
+  default = "azadmin"
+}
+
+variable "SSH_PUBLIC_IP" {
+  default = "83.204.149.250/32"
+}
+
 ########################### FRONTEDN VM ###############################
 variable "FRONTEND_VM_SIZE" {
   default = "Standard_DS1_v2"
-}
-
-variable "FRONTEND_USER" {
-  description = "Frontend Username"
-  default = "ahed"
 }
 
 variable "FRONTEND_VM_OS_DISK" {
@@ -53,11 +57,6 @@ variable "FRONTEND_HOSTNAME" {
 ########################### Backend VM ###############################
 variable "BACKEND_VM_SIZE" {
   default = "Standard_DS1_v2"
-}
-
-variable "BACKEND_USER" {
-  description = "Backend Username"
-  default = "ahed"
 }
 
 variable "BACKEND_VM_OS_DISK" {
