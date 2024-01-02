@@ -82,7 +82,7 @@ resource "azurerm_linux_virtual_machine" "frontend_VM" {
     public_key = azurerm_ssh_public_key.backend_public_key.public_key
   }
 
-  # install docker package
-  # custom_data = base64encode(file("scripts/frontendScript.sh"))
+  # Run the bash script
+  custom_data = base64encode(file("scripts/frontendScript.sh"))
   
 }
