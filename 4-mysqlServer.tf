@@ -26,3 +26,23 @@ resource "azurerm_mysql_database" "notes-db" {
   charset             = "utf8mb4"
   collation           = "utf8mb4_0900_ai_ci"
 }
+
+resource "azurerm_network_security_group" "NSG_MyNotes_Mysql" {
+  name                = "NSG_MyNotes_Mysql"
+  location            = azurerm_resource_group.myrg_deploy.location
+  resource_group_name = azurerm_resource_group.myrg_deploy.name
+}
+
+resource "azurerm_network_security_rule" "allow-mysql-from-backend" {
+  name                        = "AllowMySQLFromBackend"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_address_prefix       = azurerm_linux_virtual_machine.backend_VM.public_ip_address
+  source_port_range           = "*"
+  destination_address_prefix  = "*"
+  destination_port_range      = "3306"
+  resource_group_name         = azurerm_resource_group.myrg_deploy.name
+  network_security_group_name = azurerm_network_security_group.NSG_MyNotes_Mysql.name
+}
