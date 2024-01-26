@@ -1,0 +1,1 @@
+https://github.com/AbderrahmenISSA/wordpress-terraform/blob/master/website1/dev/provider.tf

@@ -1,0 +1,1 @@
+même que azure-tf-modules/_variables.tf
